@@ -1,0 +1,17 @@
+{
+  "name": "interview",
+  "version": "1.0.0",
+  "description": "## Use case As a software security manager I want to strengthen private access to my application In order to avoid user account hacking",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.4",
+    "jest": "^29.7.0",
+    "jest-mock-extended": "^3.0.5",
+    "ts-jest": "^29.1.1"
+  }
+}
