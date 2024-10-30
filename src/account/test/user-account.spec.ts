@@ -1,4 +1,4 @@
-import { UserAccount } from "../domain/usera-account";
+import { UserAccount } from "../domain/user-account";
 
 describe("UserAccount", () => {
   let userAccount: UserAccount;

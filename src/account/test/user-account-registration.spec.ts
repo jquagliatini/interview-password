@@ -1,11 +1,11 @@
 import { IUserAccountRepository } from "../domain/i-user-account-repository";
 import { UserAccountRegistration } from "../domain/user-account-registration";
-import { mock } from "jest-mock-extended";
-import { UserAccount } from "../domain/usera-account";
+import { mock, MockProxy } from "jest-mock-extended";
+import { UserAccount } from "../domain/user-account";
 
 describe("UserAccountRegistration", () => {
   let userAccountRegistration: UserAccountRegistration;
-  let mockUserAccountRepository: IUserAccountRepository;
+  let mockUserAccountRepository: MockProxy<IUserAccountRepository>;
 
   beforeEach(() => {
     mockUserAccountRepository = mock<IUserAccountRepository>();
@@ -28,16 +28,23 @@ describe("UserAccountRegistration", () => {
   });
 
   it("should change a user account password", async () => {
-    const userId = "123";
     const newPassword = "newPassword123";
+    const email = "test@gmail.com";
+    const mockUserAccount = new UserAccount(email, "password123");
+    mockUserAccountRepository.get.mockResolvedValue(mockUserAccount);
 
-    jest
-      .spyOn(mockUserAccountRepository, "get")
-      .mockResolvedValue(new UserAccount("123", "password123"));
+    await userAccountRegistration.changePassword(
+      mockUserAccount.id,
+      newPassword
+    );
 
-    await userAccountRegistration.changePassword(userId, newPassword);
-
-    expect(mockUserAccountRepository.get).toHaveBeenCalledWith(userId);
-    expect(mockUserAccountRepository.save).toHaveBeenCalled();
+    expect(mockUserAccountRepository.get).toHaveBeenCalledWith(
+      mockUserAccount.id
+    );
+    expect(mockUserAccountRepository.save).toHaveBeenCalledWith({
+      email,
+      password: newPassword,
+      id: mockUserAccount.id,
+    });
   });
 });

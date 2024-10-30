@@ -1,9 +1,8 @@
 export class UserAccount {
-  id: string;
-  email: string;
+  readonly id: string;
   password: string;
 
-  constructor(email: string, password: string) {
+  constructor(readonly email: string, password: string) {
     this.id = "123";
     this.email = email;
     this.password = password;
