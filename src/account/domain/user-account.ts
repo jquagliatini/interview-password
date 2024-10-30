@@ -1,14 +1,19 @@
+import { Password } from "./password.value-type";
+
 export class UserAccount {
+  private _password: Password;
+
   readonly id: string;
-  password: string;
+  get password(): string {
+    return this._password.toString();
+  }
 
   constructor(readonly email: string, password: string) {
     this.id = "123";
-    this.email = email;
-    this.password = password;
+    this._password = new Password(password);
   }
 
   public changePassword(newPassword: string): void {
-    this.password = newPassword;
+    this._password = new Password(newPassword);
   }
 }
