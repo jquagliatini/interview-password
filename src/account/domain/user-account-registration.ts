@@ -1,21 +1,21 @@
-import { IUserAccountRepository } from "./i-user-account-repository";
 import { UserAccount } from "./user-account";
+import { UserAccountRepository } from "./user-account.repository";
 
 export class UserAccountRegistration {
-  private userAccountRepository: IUserAccountRepository;
+  private userAccountRepository: UserAccountRepository;
 
-  constructor(userAccountRepository: IUserAccountRepository) {
+  constructor(userAccountRepository: UserAccountRepository) {
     this.userAccountRepository = userAccountRepository;
   }
 
-  async register(email: string, password: string): Promise<void> {
-    const userAccount = new UserAccount(email, password);
-    await this.userAccountRepository.save(userAccount);
+  async register(command: { email: string; password: string }): Promise<void> {
+    const userAccount = new UserAccount(command.email, command.password);
+    await this.userAccountRepository.persist(userAccount);
   }
 
-  async changePassword(userId: string, newPassword: string): Promise<void> {
-    const userAccount = await this.userAccountRepository.get(userId);
-    userAccount.changePassword(newPassword);
-    await this.userAccountRepository.save(userAccount);
+  async changePassword(command: { userId: string; newPassword: string }): Promise<void> {
+    const userAccount = await this.userAccountRepository.find(command.userId);
+    userAccount.changePassword({ password: command.newPassword });
+    await this.userAccountRepository.persist(userAccount);
   }
 }

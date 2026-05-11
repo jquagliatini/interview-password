@@ -1,26 +1,24 @@
-import { IUserAccountRepository } from "../domain/i-user-account-repository";
-import { UserAccountRegistration } from "../domain/user-account-registration";
 import { mock, MockProxy } from "jest-mock-extended";
 import { UserAccount } from "../domain/user-account";
+import { UserAccountRegistration } from "../domain/user-account-registration";
+import { UserAccountRepository } from "../domain/user-account.repository";
 
 describe("UserAccountRegistration", () => {
   let userAccountRegistration: UserAccountRegistration;
-  let mockUserAccountRepository: MockProxy<IUserAccountRepository>;
+  let mockUserAccountRepository: MockProxy<UserAccountRepository>;
 
   beforeEach(() => {
-    mockUserAccountRepository = mock<IUserAccountRepository>();
-    userAccountRegistration = new UserAccountRegistration(
-      mockUserAccountRepository
-    );
+    mockUserAccountRepository = mock<UserAccountRepository>();
+    userAccountRegistration = new UserAccountRegistration(mockUserAccountRepository);
   });
 
   it("should register a user account", async () => {
     const email = "test@example.com";
     const password = "password123";
 
-    await userAccountRegistration.register(email, password);
+    await userAccountRegistration.register({ email, password });
 
-    expect(mockUserAccountRepository.save).toHaveBeenCalledWith({
+    expect(mockUserAccountRepository.persist).toHaveBeenCalledWith({
       email,
       password,
       id: expect.any(String),
@@ -31,17 +29,12 @@ describe("UserAccountRegistration", () => {
     const newPassword = "newPassword123";
     const email = "test@gmail.com";
     const mockUserAccount = new UserAccount(email, "password123");
-    mockUserAccountRepository.get.mockResolvedValue(mockUserAccount);
+    mockUserAccountRepository.find.mockResolvedValue(mockUserAccount);
 
-    await userAccountRegistration.changePassword(
-      mockUserAccount.id,
-      newPassword
-    );
+    await userAccountRegistration.changePassword({ userId: mockUserAccount.id, newPassword });
 
-    expect(mockUserAccountRepository.get).toHaveBeenCalledWith(
-      mockUserAccount.id
-    );
-    expect(mockUserAccountRepository.save).toHaveBeenCalledWith({
+    expect(mockUserAccountRepository.find).toHaveBeenCalledWith(mockUserAccount.id);
+    expect(mockUserAccountRepository.persist).toHaveBeenCalledWith({
       email,
       password: newPassword,
       id: mockUserAccount.id,

@@ -1,35 +1,39 @@
-# Strengthen user account's password security
+# Renforcer la sécurité des mots de passe utilisateur
 
-## Use case
-As a software security manager
-I want to strengthen private access to my application
-In order to avoid user account hacking
+## Cas d'usage
 
-## General rules
-- A password should not have two same characters in a row regardless of the character case.
-- It should not have three same characters in the whole password regardless of the character case.
+> En tant que responsable de la sécurité
+> je souhaite renforcer l'accès aux données de l'application
 
-### Valid examples
+## Règles générales
 
- - @Azerty123
- - $JohnDoe0
+- Un mot de passe ne peux pas avoir 2 caractères identiques consécutifs, quel que soit leur casse.
+- Un mot de passe ne doit pas contenir 3 caractères identiques, quel que soit leur casse.
 
-### Invalid examples
-- AAzerty123
-- Aazerty123
-- AzerAtyA123
-- AzeratyA123
+### Exemple passant
 
-## Acceptance tests
+- `@Azerty123`
+- `$JohnDoe0`
 
-### Registration should throw an error when an invalid password is submitted
-> **When** an user registers with his mail "sample@mail.com" and the password "AAzerty123" 
+### Exemple cassant
+
+- `AAzerty123`
+- `Aazerty123`
+- `AzerAtyA123`
+- `AzeratyA123`
+
+## Tests d'acceptance
+
+### L'inscription doit échouer avec une erreur, quand un mot de passe invalide est proposé
+
+> **Quand** un utilisateur s'inscrit avec un email "**sample@mail.com**" et un mot de passe "**AAzerty123**"
 >
-> **Then** the following error is thrown "**Unsecured password submitted.**"
+> **Alors** le programme échoue avec l'erreur "**Mot de passe invalide**"
 
 ### Change user account's password should throw an error when an invalid password is submitted
-> **Given** an already registered user "sample@mail.com" 
+
+> **Soit** un utilisateur avec l'email "**sample@mail.com**"
 >
-> **When** the user "sample@mail.com" changes his password to "AAzerty123" 
+> **Quand** l'utilisateur "sample@mail.com" change de mot de passe pour "**AAzerty123**"
 >
-> **Then** the following error is thrown "**Unsecured password submitted.**"
+> **Alors** le programme échoue avec l'erreur "**Mot de passe invalide**".

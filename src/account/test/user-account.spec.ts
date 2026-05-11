@@ -8,7 +8,7 @@ describe("UserAccount", () => {
   });
 
   test("changePassword changes the password", () => {
-    userAccount.changePassword("newPassword");
+    userAccount.changePassword({ password: "newPassword" });
 
     expect(userAccount.password).toBe("newPassword");
   });
